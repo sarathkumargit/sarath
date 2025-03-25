@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+:root {
+  --custom-color: #000000;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.text-custom {
+  color: var(--custom-color);
+}
+
+.bg-custom {
+  background-color: var(--custom-color);
+}
+
+.border-custom {
+  border-color: var(--custom-color);
+}
+
+.hover\:text-custom:hover {
+  color: var(--custom-color);
+}
+
+.hover\:bg-custom\/90:hover {
+  background-color: var(--custom-color, #000000);
+  opacity: 0.9;
+}
+
+.bg-custom\/10 {
+  background-color: var(--custom-color, #000000);
+  opacity: 0.1;
+}
+
+.focus\:ring-custom:focus {
+  --tw-ring-color: var(--custom-color);
+}
+
+.focus\:border-custom:focus {
+  border-color: var(--custom-color);
+}
+
+.!rounded-button {
+  border-radius: 0.375rem;
+}
