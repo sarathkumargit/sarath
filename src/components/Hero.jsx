@@ -1,5 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
+// Profile Image
+import profileImage from '../assets/sk.jpg';
+
+// Technology Icons
+import dotnetIcon from '../assets/icons/dotnet-core.png';
+import tailwindIcon from '../assets/icons/tailwind.jpg';
+import sketchupIcon from '../assets/icons/sketchup.jpeg';
+import sassIcon from '../assets/icons/sass.png';
+import reactIcon from '../assets/icons/react.png';
+import htmlIcon from '../assets/icons/html.jpg';
+import jsIcon from '../assets/icons/js.png';
+import pythonIcon from '../assets/icons/python.png';
+import djangoIcon from '../assets/icons/dj.png';
+import springIcon from '../assets/icons/spring.png';
+import javaIcon from '../assets/icons/java.png';
+import phpIcon from '../assets/icons/php.png';
+
+// CV File
+import cvFile from '../assets/sarathkumar.pdf';
+
 const Hero = () => {
   const [visible, setVisible] = useState(false);
   const [popupsVisible, setPopupsVisible] = useState({});
@@ -15,38 +35,27 @@ const Hero = () => {
   
   // Technology icons that will animate
   const technologies = [
-    { name: '.dotnet', icon: '../assets/dotnet-core.png'  },
-    { name: 'Tailwind', icon: 'tailwind.jpg' },
-    { name: 'SketchUp', icon: 'sketchup.jpeg' },
-    { name: 'Sass', icon: 'sass.png' },
-    { name: 'React', icon: 'react.png' },
-    { name: 'html,css', icon: 'html.jpg' },
-    { name: 'js', icon: 'js.png' },
-    { name: 'python', icon: 'python.png' },
-    { name: 'django', icon: 'dj.png' },
-    { name: 'springboot', icon: 'spring.png' },
-    { name: 'java', icon: 'java.png' },
-    { name: 'php', icon: 'php.png' },
+    { name: '.dotnet', icon: dotnetIcon },
+    { name: 'Tailwind', icon: tailwindIcon },
+    { name: 'SketchUp', icon: sketchupIcon },
+    { name: 'Sass', icon: sassIcon },
+    { name: 'React', icon: reactIcon },
+    { name: 'html,css', icon: htmlIcon },
+    { name: 'js', icon: jsIcon },
+    { name: 'python', icon: pythonIcon },
+    { name: 'django', icon: djangoIcon },
+    { name: 'springboot', icon: springIcon },
+    { name: 'java', icon: javaIcon },
+    { name: 'php', icon: phpIcon },
   ];
 
   // Function to handle CV download
   const handleDownloadCV = () => {
-    // Create a link element
     const link = document.createElement('a');
-    
-    // Set the href to the path of your PDF file
-    link.href = './src/assets/sarathkumar.pdf';
-    
-    // Set the download attribute with the filename
+    link.href = cvFile;
     link.download = 'sarathkumar.pdf';
-    
-    // Append the link to the body
     document.body.appendChild(link);
-    
-    // Trigger the click event
     link.click();
-    
-    // Remove the link from the body
     document.body.removeChild(link);
   };
 
@@ -158,13 +167,12 @@ const Hero = () => {
           </div>
           
           {/* Profile Image - Shows on both mobile and desktop */}
-          <div className="w-full lg:w-1/2 flex items-center justify-center">
-            <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 -mt-8 xs:-mt-12 sm:-mt-16 md:mt-0">
-              {/* Main circular image - Modified for smaller screens */}
+          <div className="w-full lg:w-1/2 flex items-center justify-center mt-16 sm:mt-20 md:mt-24 lg:mt-0">
+            <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 mt-8 xs:mt-12 sm:mt-16 md:mt-0">
               <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 rounded-full overflow-hidden border-4 border-indigo-300 shadow-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
                 <img
                   className="w-full h-full object-cover"
-                  src="./src/assets/sk.jpg"
+                  src={profileImage}
                   alt="Profile"
                 />
               </div>
@@ -235,7 +243,6 @@ const Hero = () => {
           paddingTop: "8px",
           paddingBottom: "8px",
         }}>
-          {/* Triple the technologies to ensure continuous scrolling */}
           {[...technologies, ...technologies, ...technologies].map((tech, index) => (
             <div 
               key={index} 
@@ -243,7 +250,7 @@ const Hero = () => {
             >
               <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center bg-white rounded-full shadow-md p-1 sm:p-2">
                 <img
-                  src={`./src/assets/icons/${tech.icon}`}
+                  src={tech.icon}
                   alt={tech.name}
                   className="max-w-full max-h-full"
                 />
