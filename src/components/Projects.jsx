@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
+// Import images directly
+import hubImage from '../assets/hub.jpg';
+import portfolioImage from '../assets/portfolio.png';
+import hospitalImage from '../assets/hospital.jpg';
+import gameImage from '../assets/game.png';
+import cabanaImage from '../assets/cabana.jpeg';
+import ecomImage from '../assets/ecom.jpeg';
+
 const Projects = () => {
   // Animation state for circles
   const [activeIndex, setActiveIndex] = useState(null);
@@ -24,7 +32,7 @@ const Projects = () => {
       technologies: ['Bootstrap', 'php', 'mysql'],
       githubLink: 'https://github.com/yourusername/ecommerce',
       linkedinPost: 'https://www.linkedin.com/posts/geeth-hashan-66b12b250_wellassaunihub-innovation-webdevelopment-ugcPost-7283867057782145024-_pyK?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE1khF4B1r3oCV7Oy05moQcW1_9s-N_-7_k',
-      image: '/src/assets/hub.jpg', // Add image path
+      image: hubImage,
     },
     {
       id: 2,
@@ -33,16 +41,15 @@ const Projects = () => {
       githubLink: 'https://github.com/yourusername/portfolio',
       liveLink: 'https://portfolio-project.com',
       linkedinPost: 'https://www.linkedin.com/posts/yourusername_portfolio-nextjs-frontend-activity-234567',
-      image: '/src/assets/portfolio.png', // Add image path
+      image: portfolioImage,
     },
     {
       id: 3,
       name: 'Hospital Appointment Booking System',
       technologies: ['Bootstrap, HTML, CSS', 'MySql', 'JSP, Servlets'],
       githubLink: 'https://github.com/yourusername/taskmanager',
-      //liveLink: 'https://taskmanager-project.com',
       linkedinPost: 'https://www.linkedin.com/posts/sarath-kumar-07aa14302_webdevelopment-rapidapplicationdevelopment-activity-7283871597445218304-nPQZ?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE1khF4B1r3oCV7Oy05moQcW1_9s-N_-7_k',
-      image: '/src/assets/hospital.jpg', // Add image path
+      image: hospitalImage,
     },
     {
       id: 4,
@@ -51,25 +58,23 @@ const Projects = () => {
       githubLink: 'https://github.com/yourusername/aichat',
       liveLink: 'https://aichat-project.com',
       linkedinPost: 'https://www.linkedin.com/posts/sarath-kumar-07aa14302_webdevelopment-softwarearchitecture-mvc-activity-7243678221236412416-cVp-?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE1khF4B1r3oCV7Oy05moQcW1_9s-N_-7_k',
-      image: '/src/assets/game.png', // Add image path
+      image: gameImage,
     },
     {
       id: 5,
       name: 'SketchUp Cabana design',
       technologies: ['3D SketchUp', 'Vray', 'Photoshop'],
       githubLink: 'https://github.com/yourusername/fitnesstracker',
-      //liveLink: 'https://fitnesstracker-project.com',
       linkedinPost: 'https://www.linkedin.com/posts/sarath-kumar-07aa14302_3ddesign-ai-architecture-activity-7254358667309862912-VWmi?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE1khF4B1r3oCV7Oy05moQcW1_9s-N_-7_k',
-      image: '/src/assets/cabana.jpeg', // Add image path
+      image: cabanaImage,
     },
     {
       id: 6,
       name: 'E-commerce frontend',
       technologies: ['HTML', 'CSS', 'JavaScript'],
       githubLink: 'https://github.com/yourusername/wallet',
-      //liveLink: 'https://wallet-project.com',
       linkedinPost: 'https://www.linkedin.com/posts/sarath-kumar-07aa14302_ecommercedevelopment-htmlcssjavascript-innovation-activity-7185473606498291712-6b1s?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE1khF4B1r3oCV7Oy05moQcW1_9s-N_-7_k',
-      image: '/src/assets/ecom.jpeg', // Add image path
+      image: ecomImage,
     },
   ];
 
@@ -228,7 +233,7 @@ const Projects = () => {
                   >
                     {/* Project Image */}
                     <img
-                      src={project.image} // Use the image from the projects array
+                      src={project.image}
                       alt={project.name}
                       className="w-full h-full object-cover"
                     />
