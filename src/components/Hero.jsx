@@ -15,7 +15,7 @@ const Hero = () => {
   
   // Technology icons that will animate
   const technologies = [
-    { name: '.dotnet', icon: 'dotnet-core.png' },
+    { name: '.dotnet', icon: '../assets/dotnet-core.png'  },
     { name: 'Tailwind', icon: 'tailwind.jpg' },
     { name: 'SketchUp', icon: 'sketchup.jpeg' },
     { name: 'Sass', icon: 'sass.png' },
