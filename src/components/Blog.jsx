@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import webdevImage from '../assets/webdev.png';
 import aimovieImage from '../assets/aimovie.png';
+import ltPdf from '../assets/lt.pdf';
+import aiPdf from '../assets/ai.pdf';
 
 const Blog = () => {
   // State to manage the modal
@@ -8,13 +10,13 @@ const Blog = () => {
   const [selectedPdf, setSelectedPdf] = useState('');
   const [loadingPdf, setLoadingPdf] = useState(false);
 
-  // Sample blog data with imported images
+  // Sample blog data with imported images and PDFs
   const blogs = [
     {
       id: 2,
       title: 'The Future of Web Development',
       description: 'Discover how modern frameworks and tools are reshaping the landscape of web development in 2025.',
-      pdfUrl: './src/assets/lt.pdf',
+      pdfUrl: ltPdf,
       imageUrl: webdevImage,
       date: 'March 10, 2025',
       readTime: '6 min read',
@@ -23,7 +25,7 @@ const Blog = () => {
       id: 3,
       title: 'Artificial Intelligence in movies',
       description: 'Learn the essential techniques and strategies for implementing effective machine learning solutions.',
-      pdfUrl: './src/assets/ai.pdf',
+      pdfUrl: aiPdf,
       imageUrl: aimovieImage,
       date: 'March 5, 2025',
       readTime: '10 min read',
@@ -102,7 +104,7 @@ const Blog = () => {
           </p>
         </div>
 
-        {/* Search and Filter Bar */}
+        {/* Search and Filter Bar - Improved for mobile responsiveness */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 md:mb-12 space-y-4 md:space-y-0">
           <div className="relative w-full md:w-64">
             <input
@@ -117,22 +119,41 @@ const Blog = () => {
             </div>
           </div>
           
-          {/* Filter Buttons */}
+          {/* Enhanced horizontal scrollable filter buttons with visual cues */}
           <div className="relative w-full md:w-auto">
             <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-purple-300 scrollbar-track-transparent scrollbar-rounded scroll-smooth scroll-px-4 md:scroll-px-0 -mx-4 px-4 md:mx-0 md:px-0">
-              {['All', 'AI', 'Web Dev', 'Design', 'UX/UI', 'Mobile', 'Frontend', 'Backend'].map((filter) => (
-                <button 
-                  key={filter} 
-                  className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 whitespace-nowrap"
-                >
-                  {filter}
-                </button>
-              ))}
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 whitespace-nowrap">
+                All
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                AI
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                Web Dev
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                Design
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                UX/UI
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                Mobile
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                Frontend
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                Backend
+              </button>
             </div>
+            {/* Scroll indicators */}
+            <div className="md:hidden absolute left-0 top-1/2 transform -translate-y-1/2 w-6 h-8 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
+            <div className="md:hidden absolute right-0 top-1/2 transform -translate-y-1/2 w-6 h-8 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
           </div>
         </div>
 
-        {/* Blog Cards */}
+        {/* Blog Cards with horizontal scrolling on mobile */}
         <div className="relative mb-12">
           {/* Mobile horizontal scroll view */}
           <div className="md:hidden flex overflow-x-auto gap-4 scrollbar-thin scrollbar-thumb-purple-300 scrollbar-track-transparent pb-4 -mx-4 px-4 scroll-smooth scroll-px-4">
@@ -188,8 +209,12 @@ const Blog = () => {
               <p className="text-center text-purple-800 font-medium">See All Articles</p>
             </div>
           </div>
+          
+          {/* Scroll indicators for mobile */}
+          <div className="md:hidden absolute left-0 top-1/2 transform -translate-y-1/2 w-8 h-48 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
+          <div className="md:hidden absolute right-0 top-1/2 transform -translate-y-1/2 w-8 h-48 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
 
-          {/* Desktop grid view */}
+          {/* Desktop regular grid view */}
           <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog) => (
               <div
@@ -235,7 +260,7 @@ const Blog = () => {
           </div>
         </div>
         
-        {/* View All Articles Button */}
+        {/* View All Button (Desktop only) */}
         <div className="hidden md:flex justify-center">
           <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-full hover:shadow-lg transition-all duration-300 font-medium">
             View All Articles
@@ -284,6 +309,7 @@ const Blog = () => {
                   src={selectedPdf}
                   title="PDF Viewer"
                   className="w-full h-full min-h-[50vh] rounded-md border border-gray-200"
+                  frameBorder="0"
                 />
               )}
             </div>
@@ -296,12 +322,16 @@ const Blog = () => {
               >
                 Close
               </button>
-              <button className="w-full sm:w-auto px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 font-medium flex items-center justify-center order-1 sm:order-2">
+              <a 
+                href={selectedPdf} 
+                download 
+                className="w-full sm:w-auto px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 font-medium flex items-center justify-center order-1 sm:order-2"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
                 Download PDF
-              </button>
+              </a>
             </div>
           </div>
         </div>
