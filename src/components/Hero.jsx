@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import dotnet from '../assets/icons/dotnet-core.png';
 const Hero = () => {
   const [visible, setVisible] = useState(false);
   const [popupsVisible, setPopupsVisible] = useState({});
@@ -15,7 +15,7 @@ const Hero = () => {
   
   // Technology icons that will animate
   const technologies = [
-    { name: '.net core', icon: 'dotnet-core.png' },
+   { name: '.dotnet', icon: {dotnet} },
     { name: 'Tailwind', icon: 'tailwind.jpg' },
     { name: 'SketchUp', icon: 'sketchup.jpeg' },
     { name: 'Sass', icon: 'sass.png' },
