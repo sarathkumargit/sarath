@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-
-// Import images directly
-import WebDevImage from './assets/webdev.png';
-import AiMovieImage from './assets/aimovie.png';
+import aiImage from './assets/ai.jpg';
+import webdevImage from './assets/webdev.png';
+import aimovieImage from './assets/aimovie.png';
 
 const Blog = () => {
   // State to manage the modal
@@ -10,23 +9,23 @@ const Blog = () => {
   const [selectedPdf, setSelectedPdf] = useState('');
   const [loadingPdf, setLoadingPdf] = useState(false);
 
-  // Sample blog data with imported image paths
+  // Sample blog data with imported images
   const blogs = [
     {
       id: 2,
       title: 'The Future of Web Development',
       description: 'Discover how modern frameworks and tools are reshaping the landscape of web development in 2025.',
       pdfUrl: './src/assets/lt.pdf',
-      imageUrl: WebDevImage,
+      imageUrl: webdevImage,
       date: 'March 10, 2025',
       readTime: '6 min read',
     },
     {
       id: 3,
-      title: 'Artificial Intelligence in Movies',
-      description: 'Learn the essential techniques and strategies for exploring AI representations in cinema.',
+      title: 'Artificial Intelligence in movies',
+      description: 'Learn the essential techniques and strategies for implementing effective machine learning solutions.',
       pdfUrl: './src/assets/ai.pdf',
-      imageUrl: AiMovieImage,
+      imageUrl: aimovieImage,
       date: 'March 5, 2025',
       readTime: '10 min read',
     },
@@ -78,7 +77,7 @@ const Blog = () => {
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [isModalOpen]);
+  }, []);
 
   return (
     <section id="blog" className="py-12 md:py-20 relative overflow-x-hidden">
@@ -260,7 +259,7 @@ const Blog = () => {
           </div>
         </div>
         
-        {/* View more button - Only visible on desktop */}
+        {/* View All Button (Desktop only) */}
         <div className="hidden md:flex justify-center">
           <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-full hover:shadow-lg transition-all duration-300 font-medium">
             View All Articles
@@ -268,7 +267,7 @@ const Blog = () => {
         </div>
       </div>
 
-      {/* Enhanced Modal for PDF Popup with improved scrolling */}
+      {/* PDF Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm transition-opacity duration-300">
           <div className="bg-white rounded-xl shadow-2xl w-11/12 md:w-4/5 lg:w-3/4 max-h-[90vh] flex flex-col animate-scale-up">
@@ -297,7 +296,7 @@ const Blog = () => {
               </button>
             </div>
 
-            {/* PDF Embed with loading state - Flex-grow to take available space */}
+            {/* Modal Content */}
             <div className="p-4 flex-grow bg-gray-50 overflow-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
               {loadingPdf ? (
                 <div className="flex flex-col items-center justify-center h-full">
@@ -405,13 +404,11 @@ const Blog = () => {
           border-radius: 9999px;
         }
         
-        /* For Firefox */
         * {
           scrollbar-color: rgba(168, 85, 247, 0.3) transparent;
           scrollbar-width: thin;
         }
         
-        /* Smooth scroll behavior */
         .scroll-smooth {
           scroll-behavior: smooth;
         }
