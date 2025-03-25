@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
-// Import images
-import webDevImage from './assets/webdev.png';
-import aiMovieImage from './assets/aimovie.png';
-
-// Import PDFs (if needed)
-import ltPdf from './assets/lt.pdf';
-import aiPdf from './assets/ai.pdf';
+import webdevImage from '../assets/webdev.png';
+import aimovieImage from '../assets/aimovie.png';
 
 const Blog = () => {
   // State to manage the modal
@@ -14,23 +8,23 @@ const Blog = () => {
   const [selectedPdf, setSelectedPdf] = useState('');
   const [loadingPdf, setLoadingPdf] = useState(false);
 
-  // Sample blog data with imported images and PDFs
+  // Sample blog data with imported images
   const blogs = [
     {
       id: 2,
       title: 'The Future of Web Development',
       description: 'Discover how modern frameworks and tools are reshaping the landscape of web development in 2025.',
-      pdfUrl: ltPdf,
-      imageUrl: webDevImage,
+      pdfUrl: './src/assets/lt.pdf',
+      imageUrl: webdevImage,
       date: 'March 10, 2025',
       readTime: '6 min read',
     },
     {
       id: 3,
-      title: 'Artificial Intelligence in Movies',
+      title: 'Artificial Intelligence in movies',
       description: 'Learn the essential techniques and strategies for implementing effective machine learning solutions.',
-      pdfUrl: aiPdf,
-      imageUrl: aiMovieImage,
+      pdfUrl: './src/assets/ai.pdf',
+      imageUrl: aimovieImage,
       date: 'March 5, 2025',
       readTime: '10 min read',
     },
