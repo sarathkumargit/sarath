@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
+// Import background image
+import backgroundImage from '../assets/exx.jpeg';
+
+// Import university logo
+import universityLogo from '../assets/uwu.jpeg';
+import capitalTrustLogo from '../assets/capital.png';
+
 const Timeline = () => {
   const [isVisible, setIsVisible] = useState({
     education: false,
@@ -48,7 +55,8 @@ const Timeline = () => {
     { name: 'Git', color: 'bg-red-500' },
     { name: 'SQL', color: 'bg-purple-500' },
     { name: 'Tailwind', color: 'bg-cyan-500' },
-    { name: 'TypeScript', color: 'bg-blue-600' },{ name: 'SaaS', color: 'bg-purple-500' },
+    { name: 'TypeScript', color: 'bg-blue-600' },
+    { name: 'SaaS', color: 'bg-purple-500' },
     { name: 'Django', color: 'bg-green-700' },
     { name: 'Spring Boot (Java)', color: 'bg-teal-600' },
     { name: '3D SketchUp', color: 'bg-orange-500' },
@@ -62,7 +70,7 @@ const Timeline = () => {
       {/* Background with parallax effect */}
       <div
         className="absolute inset-0 z-0 bg-cover bg-center bg-fixed"
-        style={{ backgroundImage: "url('./src/assets/exx.jpeg')" }}
+        style={{ backgroundImage: `url(${backgroundImage})` }}
       ></div>
 
       {/* Gradient overlay for better readability */}
@@ -126,7 +134,7 @@ const Timeline = () => {
                   <div className="flex-shrink-0 mt-1">
                     <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center border-2 border-indigo-500 p-1">
                       <img
-                        src="./src/assets/uwu.jpeg"
+                        src={universityLogo}
                         alt="Uva Wellassa University"
                         className="w-full h-full rounded-full object-cover"
                       />
@@ -167,7 +175,7 @@ const Timeline = () => {
                   <div className="flex-shrink-0 mt-1">
                     <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center border-2 border-indigo-500 p-1">
                       <img
-                        src="./src/assets/capital.png"
+                        src={capitalTrustLogo}
                         alt="Capital TRUST Holdings"
                         className="w-full h-full rounded-full object-cover"
                       />
