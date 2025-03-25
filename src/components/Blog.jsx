@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
+// Import images directly
+import WebDevImage from './assets/webdev.png';
+import AiMovieImage from './assets/aimovie.png';
+
 const Blog = () => {
   // State to manage the modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState('');
   const [loadingPdf, setLoadingPdf] = useState(false);
 
-  // Sample blog data with corrected image and PDF paths
+  // Sample blog data with imported image paths
   const blogs = [
     {
       id: 2,
       title: 'The Future of Web Development',
       description: 'Discover how modern frameworks and tools are reshaping the landscape of web development in 2025.',
-      pdfUrl: '/assets/lt.pdf',
-      imageUrl: '/assets/webdev.png',
+      pdfUrl: './src/assets/lt.pdf',
+      imageUrl: WebDevImage,
       date: 'March 10, 2025',
       readTime: '6 min read',
     },
@@ -21,8 +25,8 @@ const Blog = () => {
       id: 3,
       title: 'Artificial Intelligence in Movies',
       description: 'Learn the essential techniques and strategies for exploring AI representations in cinema.',
-      pdfUrl: '/assets/ai.pdf',
-      imageUrl: '/assets/aimovie.png',
+      pdfUrl: './src/assets/ai.pdf',
+      imageUrl: AiMovieImage,
       date: 'March 5, 2025',
       readTime: '10 min read',
     },
@@ -86,9 +90,9 @@ const Blog = () => {
         <div className="hidden md:block absolute -bottom-10 -right-10 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
       </div>
       
-      {/* Content container */}
+      {/* Content container with z-index to appear above background */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Heading */}
+        {/* Section Heading with animated underline */}
         <div className="text-center mb-10 md:mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 inline-block relative">
             Latest Articles
@@ -100,7 +104,7 @@ const Blog = () => {
           </p>
         </div>
 
-        {/* Search and Filter Bar */}
+        {/* Search and Filter Bar - Improved for mobile responsiveness */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 md:mb-12 space-y-4 md:space-y-0">
           <div className="relative w-full md:w-64">
             <input
@@ -115,17 +119,33 @@ const Blog = () => {
             </div>
           </div>
           
-          {/* Filter Buttons */}
+          {/* Enhanced horizontal scrollable filter buttons with visual cues */}
           <div className="relative w-full md:w-auto">
             <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-purple-300 scrollbar-track-transparent scrollbar-rounded scroll-smooth scroll-px-4 md:scroll-px-0 -mx-4 px-4 md:mx-0 md:px-0">
-              {['All', 'AI', 'Web Dev', 'Design', 'UX/UI', 'Mobile', 'Frontend', 'Backend'].map((filter) => (
-                <button 
-                  key={filter}
-                  className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 whitespace-nowrap"
-                >
-                  {filter}
-                </button>
-              ))}
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 whitespace-nowrap">
+                All
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                AI
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                Web Dev
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                Design
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                UX/UI
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                Mobile
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                Frontend
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                Backend
+              </button>
             </div>
             {/* Scroll indicators */}
             <div className="md:hidden absolute left-0 top-1/2 transform -translate-y-1/2 w-6 h-8 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
@@ -133,7 +153,7 @@ const Blog = () => {
           </div>
         </div>
 
-        {/* Blog Cards */}
+        {/* Blog Cards with horizontal scrolling on mobile */}
         <div className="relative mb-12">
           {/* Mobile horizontal scroll view */}
           <div className="md:hidden flex overflow-x-auto gap-4 scrollbar-thin scrollbar-thumb-purple-300 scrollbar-track-transparent pb-4 -mx-4 px-4 scroll-smooth scroll-px-4">
@@ -189,8 +209,12 @@ const Blog = () => {
               <p className="text-center text-purple-800 font-medium">See All Articles</p>
             </div>
           </div>
+          
+          {/* Scroll indicators for mobile */}
+          <div className="md:hidden absolute left-0 top-1/2 transform -translate-y-1/2 w-8 h-48 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
+          <div className="md:hidden absolute right-0 top-1/2 transform -translate-y-1/2 w-8 h-48 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
 
-          {/* Desktop grid view */}
+          {/* Desktop regular grid view */}
           <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog) => (
               <div
@@ -236,7 +260,7 @@ const Blog = () => {
           </div>
         </div>
         
-        {/* View more button - Desktop only */}
+        {/* View more button - Only visible on desktop */}
         <div className="hidden md:flex justify-center">
           <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-full hover:shadow-lg transition-all duration-300 font-medium">
             View All Articles
@@ -244,7 +268,7 @@ const Blog = () => {
         </div>
       </div>
 
-      {/* PDF Modal */}
+      {/* Enhanced Modal for PDF Popup with improved scrolling */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm transition-opacity duration-300">
           <div className="bg-white rounded-xl shadow-2xl w-11/12 md:w-4/5 lg:w-3/4 max-h-[90vh] flex flex-col animate-scale-up">
@@ -273,7 +297,7 @@ const Blog = () => {
               </button>
             </div>
 
-            {/* PDF Embed with loading state */}
+            {/* PDF Embed with loading state - Flex-grow to take available space */}
             <div className="p-4 flex-grow bg-gray-50 overflow-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
               {loadingPdf ? (
                 <div className="flex flex-col items-center justify-center h-full">
@@ -308,29 +332,88 @@ const Blog = () => {
         </div>
       )}
       
-      {/* Inline Styles for Animations and Scrollbar */}
+      {/* CSS for animations and custom scrollbar */}
       <style jsx>{`
         @keyframes blob {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          25% { transform: translate(20px, -30px) scale(1.1); }
-          50% { transform: translate(-20px, 20px) scale(0.9); }
-          75% { transform: translate(20px, 30px) scale(1.05); }
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          25% {
+            transform: translate(20px, -30px) scale(1.1);
+          }
+          50% {
+            transform: translate(-20px, 20px) scale(0.9);
+          }
+          75% {
+            transform: translate(20px, 30px) scale(1.05);
+          }
         }
-        .animate-blob { animation: blob 10s infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
+        .animate-blob {
+          animation: blob 10s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
         .animate-scale-up {
           animation: scaleUp 0.3s ease-out forwards;
         }
         @keyframes scaleUp {
-          from { transform: scale(0.95); opacity: 0; }
-          to { transform: scale(1); opacity: 1; }
+          from {
+            transform: scale(0.95);
+            opacity: 0;
+          }
+          to {
+            transform: scale(1);
+            opacity: 1;
+          }
         }
         .line-clamp-2 {
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
+        }
+        
+        /* Enhanced custom scrollbar styles */
+        .scrollbar-thin {
+          scrollbar-width: thin;
+        }
+        
+        /* For Webkit browsers (Chrome, Safari) */
+        .scrollbar-thin::-webkit-scrollbar {
+          height: 6px;
+          width: 6px;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+          background-color: rgba(168, 85, 247, 0.3);
+          border-radius: 9999px;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+          background-color: rgba(168, 85, 247, 0.5);
+        }
+        
+        .scrollbar-rounded::-webkit-scrollbar-thumb {
+          border-radius: 9999px;
+        }
+        
+        /* For Firefox */
+        * {
+          scrollbar-color: rgba(168, 85, 247, 0.3) transparent;
+          scrollbar-width: thin;
+        }
+        
+        /* Smooth scroll behavior */
+        .scroll-smooth {
+          scroll-behavior: smooth;
         }
       `}</style>
     </section>
