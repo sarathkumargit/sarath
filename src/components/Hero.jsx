@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import image from 'IMG_1321.JPG';
 
 // Profile Image
 import profileImage from 'IMG_1321.JPG';
