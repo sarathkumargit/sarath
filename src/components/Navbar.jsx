@@ -64,7 +64,7 @@ const Navbar = () => {
             {/* Contact Me Button */}
             <a
               href="#contact" // Redirect to the Contact section
-              className="bg-green-200/50 text-white px-4 py-2 rounded-md font-medium hover:bg-green-200/70 transition-colors border border-green-300/30"
+              className="bg-indigo-900/30 text-white px-4 py-2 rounded-md font-medium hover:bg-indigo-900 transition-colors border border-indigo-300/30"
             >
               Contact Me
             </a>

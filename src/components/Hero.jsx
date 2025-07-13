@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-
 // Profile Image
 import profileImage from '../assets/sk.jpg';
 
@@ -21,9 +20,57 @@ import phpIcon from '../assets/icons/php.png';
 // CV File
 import cvFile from '../assets/sarathkumar.pdf';
 
+// Aurora Text Effect Component
+const AuroraText = ({ 
+  text, 
+  fontSize = "clamp(2rem, 6vw, 4rem)",
+  className = ""
+}) => {
+  return (
+    <span 
+      className={`inline-block font-extrabold text-transparent bg-clip-text relative ${className}`}
+      style={{
+        fontSize: fontSize,
+        background: `linear-gradient(45deg, 
+          hsl(240, 100%, 70%), 
+          hsl(280, 100%, 70%), 
+          hsl(320, 100%, 70%), 
+          hsl(360, 100%, 70%), 
+          hsl(40, 100%, 70%), 
+          hsl(80, 100%, 70%), 
+          hsl(120, 100%, 70%), 
+          hsl(160, 100%, 70%), 
+          hsl(200, 100%, 70%), 
+          hsl(240, 100%, 70%)
+        )`,
+        backgroundSize: '300% 300%',
+        animation: `aurora-text 6s ease-in-out infinite`,
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text',
+        filter: 'drop-shadow(0 0 10px rgba(139, 92, 246, 0.3))'
+      }}
+    >
+      {text}
+      
+      {/* Aurora glow effect behind text */}
+      <span 
+        className="absolute inset-0 opacity-30 -z-10"
+        style={{
+          background: `radial-gradient(circle at 20% 50%, rgba(255, 0, 110, 0.3) 0%, transparent 50%), 
+                      radial-gradient(circle at 80% 50%, rgba(131, 56, 236, 0.3) 0%, transparent 50%)`,
+          animation: `aurora-glow 4s ease-in-out infinite alternate`,
+          filter: 'blur(8px)'
+        }}
+      />
+    </span>
+  );
+};
+
 const Hero = () => {
   const [visible, setVisible] = useState(false);
   const [popupsVisible, setPopupsVisible] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
   
   // Messages that will pop up around the image
   const messages = [
@@ -60,13 +107,35 @@ const Hero = () => {
     document.body.removeChild(link);
   };
 
+  // Check if device is mobile
   useEffect(() => {
-    // Load Spline viewer script
-    const splineScript = document.createElement('script');
-    splineScript.type = 'module';
-    splineScript.src = 'https://unpkg.com/@splinetool/viewer@1.9.79/build/spline-viewer.js';
-    document.head.appendChild(splineScript);
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
     
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  useEffect(() => {
+    // Only load Spline viewer script on desktop
+    if (!isMobile) {
+      const splineScript = document.createElement('script');
+      splineScript.type = 'module';
+      splineScript.src = 'https://unpkg.com/@splinetool/viewer@1.9.79/build/spline-viewer.js';
+      document.head.appendChild(splineScript);
+      
+      return () => {
+        if (document.head.contains(splineScript)) {
+          document.head.removeChild(splineScript);
+        }
+      };
+    }
+  }, [isMobile]);
+
+  useEffect(() => {
     // Show main content
     setVisible(true);
     
@@ -114,22 +183,38 @@ const Hero = () => {
     // Clean up everything when component unmounts
     return () => {
       cleanupCycle();
-      if (document.head.contains(splineScript)) {
-        document.head.removeChild(splineScript);
-      }
     };
   }, []);
 
   return (
     <section id="home" className="relative bg-indigo-900 overflow-hidden min-h-screen">
+      {/* Background - Black for mobile, with 3D model for desktop */}
       <div className="absolute inset-0 bg-black z-0"></div>
 
-      {/* Spline 3D model with opacity overlay */}
-      <div className="absolute inset-0 z-0 opacity-70">
-        <spline-viewer
-          url="https://prod.spline.design/RJHvLFVM0NzQbwMV/scene.splinecode"
-          events-target="global" // Enable global cursor interaction
-        ></spline-viewer>
+      {/* Spline 3D model - Only shown on desktop (md and above) */}
+      {!isMobile && (
+        <div className="absolute inset-0 z-0 opacity-70 hidden md:block">
+          <spline-viewer
+            url="https://prod.spline.design/RJHvLFVM0NzQbwMV/scene.splinecode"
+            events-target="global"
+          ></spline-viewer>
+        </div>
+      )}
+
+      {/* Mobile background gradient - Only shown on mobile */}
+      <div className="absolute inset-0 z-0 md:hidden bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900">
+        {/* Animated background elements for mobile */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Floating shapes */}
+          <div className="absolute top-10 left-10 w-20 h-20 bg-indigo-600/30 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/3 right-8 w-16 h-16 bg-purple-600/30 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute bottom-1/4 left-6 w-12 h-12 bg-blue-600/30 rounded-full animate-ping" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-10 right-1/4 w-14 h-14 bg-pink-600/30 rounded-full animate-pulse" style={{ animationDelay: '3s' }}></div>
+          
+          {/* Gradient overlays */}
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-indigo-800/20 to-transparent"></div>
+          <div className="absolute bottom-0 right-0 w-full h-full bg-gradient-to-l from-purple-800/20 to-transparent"></div>
+        </div>
       </div>
 
       <div className="max-w-8xl mx-auto relative z-10 px-4 sm:px-6 md:px-8">
@@ -138,12 +223,17 @@ const Hero = () => {
           {/* For mobile: First show image, then text. For desktop: Keep original order */}
           <div className="hidden lg:block lg:w-1/2 mb-12 lg:mb-0">
             {/* This is the text content for desktop only (shows on left) */}
-            <div className={`backdrop-blur-sm bg-indigo-900/30 p-4 sm:p-6 rounded-lg text-white transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`  p-4 sm:p-6 rounded-lg text-white transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight font-extrabold text-center lg:text-left">
-                <span className="block">Hi, I'm Sarathkumar</span>
-                <span className="block text-indigo-300 mt-1 text-[40px]">Innovator in Code and Creativity</span>
+                <span className="block">
+                  <AuroraText 
+                    text="Hi, I'm Sarathkumar" 
+                    fontSize="clamp(2rem, 5vw, 3.5rem)"
+                  />
+                </span>
+                <span className=" block text-indigo-300 mt-1 text-[40px]">Innovator in Code and Creativity</span>
               </h1>
-              <p className="mt-3 text-sm sm:text-base md:text-lg text-indigo-100 text-center lg:text-left">
+              <p className=" bg-indigo-900/30 mt-3 text-sm sm:text-base md:text-lg text-indigo-100 text-center lg:text-left">
                 Passionate developer skilled in web and mobile app development and 3D SketchUp design. I excel at creating user-friendly products with intuitive interfaces and robust systems while leveraging my collaboration skills to achieve impactful results. Let's connect and build something extraordinary!
               </p>
               <div className="mt-5 sm:mt-8 flex flex-col sm:flex-row justify-center lg:justify-start gap-3 sm:gap-4">
@@ -204,9 +294,14 @@ const Hero = () => {
           
           {/* Mobile-only text content that appears below the image */}
           <div className="w-full lg:hidden mt-12">
-            <div className={`backdrop-blur-sm bg-indigo-900/30 p-4 sm:p-6 rounded-lg text-white transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`backdrop-blur-sm bg-indigo-900/40 md:bg-indigo-900/30 p-4 sm:p-6 rounded-lg text-white transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
               <h1 className="text-3xl sm:text-4xl tracking-tight font-extrabold text-center">
-                <span className="block">Hi, I'm Sarathkumar</span>
+                <span className="block">
+                  <AuroraText 
+                    text="Hi, I'm Sarathkumar" 
+                    fontSize="clamp(1.8rem, 6vw, 3rem)"
+                  />
+                </span>
                 <span className="block text-indigo-300 mt-1 text-[32px]">Innovator in Code and Creativity</span>
               </h1>
               <p className="mt-3 text-sm sm:text-base text-indigo-100 text-center">
@@ -302,6 +397,16 @@ const Hero = () => {
             0%, 50% { opacity: 0; }
             25%, 75% { opacity: 1; }
             100% { opacity: 0; }
+          }
+          
+          @keyframes aurora-text {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+          }
+          
+          @keyframes aurora-glow {
+            0% { transform: translateX(-10px) translateY(-5px); }
+            100% { transform: translateX(10px) translateY(5px); }
           }
           
           @media (max-width: 640px) {
