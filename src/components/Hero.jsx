@@ -18,7 +18,7 @@ import javaIcon from '../assets/icons/java.png';
 import phpIcon from '../assets/icons/php.png';
 
 // CV File
-import cvFile from '../assets/sarathkumar.pdf';
+import cvFile from '../assets/Sarathkumar.pdf';
 
 // Aurora Text Effect Component
 const AuroraText = ({ 
