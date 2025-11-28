@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import webdevImage from '../assets/webdev.png';
 import aimovieImage from '../assets/aimovie.png';
 import ltPdf from '../assets/lt.pdf';
 import aiPdf from '../assets/ai.pdf';
 
 const Blog = () => {
-  // State to manage the modal
+  const [scrollY, setScrollY] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState('');
   const [loadingPdf, setLoadingPdf] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
 
   // Sample blog data with imported images and PDFs
   const blogs = [
@@ -31,6 +33,26 @@ const Blog = () => {
       readTime: '10 min read',
     },
   ];
+
+  // Parallax scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect();
+        const scrollProgress = -rect.top / (rect.height + window.innerHeight);
+        setScrollY(scrollProgress);
+
+        // Trigger animations when section is in view
+        if (rect.top < window.innerHeight * 0.75) {
+          setIsVisible(true);
+        }
+      }
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Function to open the modal with the selected PDF
   const openModal = (pdfUrl) => {
@@ -81,203 +103,174 @@ const Blog = () => {
   }, [isModalOpen]);
 
   return (
-    <section id="blog" className="py-12 md:py-20 relative overflow-x-hidden">
-      {/* Background design elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-yellow-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-        <div className="hidden md:block absolute -bottom-10 -right-10 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
+    <section 
+      ref={sectionRef}
+      id="blog" 
+      className="relative min-h-screen overflow-hidden bg-black"
+    >
+      {/* Parallax Background Layers */}
+      <div className="absolute inset-0">
+        {/* Layer 1: Animated gradient background */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-br from-black via-purple-950/30 to-violet-950/30"
+          style={{
+            transform: `translateY(${scrollY * 50}px)`,
+          }}
+        />
+        
+        {/* Layer 2: Animated mesh gradient */}
+        <div 
+          className="absolute inset-0 opacity-40"
+          style={{
+            background: 'radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.3) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.4) 0%, transparent 50%)',
+            transform: `translateY(${scrollY * -30}px) scale(${1 + scrollY * 0.1})`,
+          }}
+        />
+
+        {/* Layer 3: Floating particles */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            transform: `translateY(${scrollY * 20}px)`,
+          }}
+        >
+          {Array.from({ length: 25 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full bg-purple-500/20 blur-sm"
+              style={{
+                width: `${Math.random() * 6 + 2}px`,
+                height: `${Math.random() * 6 + 2}px`,
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                animation: `float ${Math.random() * 10 + 15}s ease-in-out infinite`,
+                animationDelay: `${Math.random() * 5}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Layer 4: Grid pattern */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(168, 85, 247, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.3) 1px, transparent 1px)',
+            backgroundSize: '50px 50px',
+            transform: `translateY(${scrollY * -40}px)`,
+          }}
+        />
       </div>
-      
-      {/* Content container with z-index to appear above background */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Heading with animated underline */}
-        <div className="text-center mb-10 md:mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 inline-block relative">
+
+      {/* Content Container */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        {/* Section Title */}
+        <div 
+          className="text-center mb-16"
+          style={{
+            transform: `translateY(${scrollY * -20}px)`,
+            opacity: Math.max(0, 1 - scrollY * 0.5),
+          }}
+        >
+          <h2 className="text-5xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-violet-400 to-purple-400 mb-4 animate-gradient">
             Latest Articles
-            <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-blue-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-500 mx-auto my-4"></div>
-          <p className="mt-4 max-w-2xl text-lg md:text-xl text-gray-600 mx-auto">
+          <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-purple-500 to-transparent animate-pulse-glow mb-6" />
+          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
             Thoughts and insights about design, development, and technology.
           </p>
         </div>
 
-        {/* Search and Filter Bar - Improved for mobile responsiveness */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8 md:mb-12 space-y-4 md:space-y-0">
-          <div className="relative w-full md:w-64">
-            <input
-              type="text"
-              placeholder="Search articles..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-            />
-            <div className="absolute left-3 top-2.5 text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-              </svg>
-            </div>
-          </div>
-          
-          {/* Enhanced horizontal scrollable filter buttons with visual cues */}
-          <div className="relative w-full md:w-auto">
-            <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-purple-300 scrollbar-track-transparent scrollbar-rounded scroll-smooth scroll-px-4 md:scroll-px-0 -mx-4 px-4 md:mx-0 md:px-0">
-              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 whitespace-nowrap">
-                All
-              </button>
-              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
-                AI
-              </button>
-              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
-                Web Dev
-              </button>
-              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
-                Design
-              </button>
-              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
-                UX/UI
-              </button>
-              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
-                Mobile
-              </button>
-              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
-                Frontend
-              </button>
-              <button className="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none whitespace-nowrap">
-                Backend
-              </button>
-            </div>
-            {/* Scroll indicators */}
-            <div className="md:hidden absolute left-0 top-1/2 transform -translate-y-1/2 w-6 h-8 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
-            <div className="md:hidden absolute right-0 top-1/2 transform -translate-y-1/2 w-6 h-8 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
-          </div>
-        </div>
-
-        {/* Blog Cards with horizontal scrolling on mobile */}
-        <div className="relative mb-12">
-          {/* Mobile horizontal scroll view */}
-          <div className="md:hidden flex overflow-x-auto gap-4 scrollbar-thin scrollbar-thumb-purple-300 scrollbar-track-transparent pb-4 -mx-4 px-4 scroll-smooth scroll-px-4">
-            {blogs.map((blog) => (
-              <div
-                key={blog.id}
-                className="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group cursor-pointer"
+        {/* Blog Cards Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
+          {blogs.map((blog, index) => (
+            <div
+              key={blog.id}
+              className={`group relative transition-all duration-1000 ${
+                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+              }`}
+              style={{
+                transform: `translateY(${scrollY * (index % 2 === 0 ? 10 : 5)}px)`,
+                transitionDelay: `${index * 200}ms`,
+              }}
+            >
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-violet-600 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500 animate-pulse-slow" />
+              <div 
+                className="relative bg-black/80 backdrop-blur-xl border border-purple-500/30 rounded-2xl overflow-hidden hover:border-purple-500/60 transition-all duration-500 cursor-pointer h-full flex flex-col"
                 onClick={() => openModal(blog.pdfUrl)}
               >
-                {/* Card image */}
-                <div className="h-48 overflow-hidden">
+                {/* Card Image */}
+                <div className="h-32 overflow-hidden relative">
                   <img
                     src={blog.imageUrl}
                     alt={blog.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 </div>
                 
-                {/* Card content */}
-                <div className="p-6">
+                {/* Card Content */}
+                <div className="p-4 flex-1 flex flex-col">
                   {/* Meta info */}
-                  <div className="flex justify-between items-center text-sm text-gray-500 mb-3">
-                    <span>{blog.date}</span>
-                    <span>{blog.readTime}</span>
+                  <div className="flex justify-between items-center text-xs text-purple-300 mb-2">
+                    <span className="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      {blog.date}
+                    </span>
+                    <span className="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {blog.readTime}
+                    </span>
                   </div>
                   
                   {/* Title and description */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors duration-300">
+                  <h3 className="text-lg font-bold text-white mb-2 group-hover:text-purple-400 transition-colors duration-300">
                     {blog.title}
                   </h3>
-                  <p className="text-gray-600 mb-4 line-clamp-2">
+                  <p className="text-gray-300 text-sm mb-3 flex-1 leading-relaxed line-clamp-2">
                     {blog.description}
                   </p>
                   
                   {/* Read more button */}
-                  <div className="flex items-center text-purple-600 font-semibold group-hover:text-purple-800">
+                  <div className="flex items-center text-purple-400 text-sm font-semibold group-hover:text-violet-300 transition-colors">
                     Read Article
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-2 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                     </svg>
                   </div>
                 </div>
               </div>
-            ))}
-            
-            {/* "See more" card */}
-            <div className="flex-shrink-0 w-48 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl shadow-md flex flex-col items-center justify-center p-6 cursor-pointer transition-all hover:shadow-lg">
-              <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-                </svg>
-              </div>
-              <p className="text-center text-purple-800 font-medium">See All Articles</p>
             </div>
-          </div>
-          
-          {/* Scroll indicators for mobile */}
-          <div className="md:hidden absolute left-0 top-1/2 transform -translate-y-1/2 w-8 h-48 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
-          <div className="md:hidden absolute right-0 top-1/2 transform -translate-y-1/2 w-8 h-48 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
-
-          {/* Desktop regular grid view */}
-          <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogs.map((blog) => (
-              <div
-                key={blog.id}
-                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group cursor-pointer"
-                onClick={() => openModal(blog.pdfUrl)}
-              >
-                {/* Card image */}
-                <div className="h-48 overflow-hidden">
-                  <img
-                    src={blog.imageUrl}
-                    alt={blog.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                </div>
-                
-                {/* Card content */}
-                <div className="p-6">
-                  {/* Meta info */}
-                  <div className="flex justify-between items-center text-sm text-gray-500 mb-3">
-                    <span>{blog.date}</span>
-                    <span>{blog.readTime}</span>
-                  </div>
-                  
-                  {/* Title and description */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors duration-300">
-                    {blog.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4 line-clamp-2">
-                    {blog.description}
-                  </p>
-                  
-                  {/* Read more button */}
-                  <div className="flex items-center text-purple-600 font-semibold group-hover:text-purple-800">
-                    Read Article
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1 group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
-        
-        {/* View All Button (Desktop only) */}
-        <div className="hidden md:flex justify-center">
-          <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-full hover:shadow-lg transition-all duration-300 font-medium">
-            View All Articles
+
+        {/* View All Button */}
+        <div 
+          className="flex justify-center"
+          style={{
+            transform: `translateY(${scrollY * -10}px)`,
+          }}
+        >
+          <button className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-full font-semibold text-lg shadow-lg shadow-purple-500/50 hover:shadow-purple-500/80 transition-all duration-300 hover:scale-105">
+            <span className="relative z-10">View All Articles</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </button>
         </div>
       </div>
 
       {/* PDF Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm transition-opacity duration-300">
-          <div className="bg-white rounded-xl shadow-2xl w-11/12 md:w-4/5 lg:w-3/4 max-h-[90vh] flex flex-col animate-scale-up">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md transition-opacity duration-300">
+          <div className="bg-gradient-to-br from-gray-900 to-black border border-purple-500/30 rounded-2xl shadow-2xl shadow-purple-500/20 w-11/12 md:w-4/5 lg:w-3/4 max-h-[90vh] flex flex-col animate-scale-up">
             {/* Modal Header */}
-            <div className="flex justify-between items-center p-4 md:p-6 border-b flex-shrink-0">
-              <h3 className="text-xl font-bold text-gray-900">Article Preview</h3>
+            <div className="flex justify-between items-center p-6 border-b border-purple-500/30 flex-shrink-0">
+              <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-violet-400">Article Preview</h3>
               <button
                 onClick={closeModal}
-                className="text-gray-500 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
+                className="text-gray-400 hover:text-white p-2 rounded-full hover:bg-purple-500/20 transition-all duration-200"
                 aria-label="Close modal"
               >
                 <svg
@@ -298,34 +291,34 @@ const Blog = () => {
             </div>
 
             {/* PDF Viewer */}
-            <div className="p-4 flex-grow bg-gray-50 overflow-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+            <div className="p-6 flex-grow bg-black/40 overflow-auto scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent">
               {loadingPdf ? (
                 <div className="flex flex-col items-center justify-center h-full">
-                  <div className="w-16 h-16 border-4 border-gray-200 border-t-purple-600 rounded-full animate-spin"></div>
-                  <p className="mt-4 text-gray-600">Loading document...</p>
+                  <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
+                  <p className="mt-4 text-purple-300">Loading document...</p>
                 </div>
               ) : (
                 <iframe
                   src={selectedPdf}
                   title="PDF Viewer"
-                  className="w-full h-full min-h-[50vh] rounded-md border border-gray-200"
+                  className="w-full h-full min-h-[50vh] rounded-lg border border-purple-500/30"
                   frameBorder="0"
                 />
               )}
             </div>
             
             {/* Modal Footer */}
-            <div className="p-4 md:p-6 border-t bg-white flex flex-col sm:flex-row justify-between items-center gap-3 flex-shrink-0">
+            <div className="p-6 border-t border-purple-500/30 bg-black/60 flex flex-col sm:flex-row justify-between items-center gap-3 flex-shrink-0">
               <button
                 onClick={closeModal}
-                className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 font-medium order-2 sm:order-1"
+                className="w-full sm:w-auto px-6 py-3 border border-purple-500/50 rounded-lg text-purple-300 hover:bg-purple-500/10 font-medium transition-all duration-200 order-2 sm:order-1"
               >
                 Close
               </button>
               <a 
                 href={selectedPdf} 
                 download 
-                className="w-full sm:w-auto px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 font-medium flex items-center justify-center order-1 sm:order-2"
+                className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/50 font-medium flex items-center justify-center transition-all duration-200 order-1 sm:order-2"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -337,88 +330,106 @@ const Blog = () => {
         </div>
       )}
       
-      {/* CSS for animations and custom scrollbar */}
-      <style jsx>{`
-        @keyframes blob {
-          0%, 100% {
-            transform: translate(0, 0) scale(1);
+      {/* CSS Animations */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes float {
+            0%, 100% { 
+              transform: translateY(0px) rotate(0deg);
+            }
+            50% { 
+              transform: translateY(-10px) rotate(2deg);
+            }
           }
-          25% {
-            transform: translate(20px, -30px) scale(1.1);
+          
+          @keyframes pulse-slow {
+            0%, 100% { 
+              opacity: 0.3;
+            }
+            50% { 
+              opacity: 0.6;
+            }
           }
-          50% {
-            transform: translate(-20px, 20px) scale(0.9);
+          
+          @keyframes pulse-glow {
+            0%, 100% { 
+              opacity: 1;
+              box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+            }
+            50% { 
+              opacity: 0.7;
+              box-shadow: 0 0 30px rgba(139, 92, 246, 0.8);
+            }
           }
-          75% {
-            transform: translate(20px, 30px) scale(1.05);
+          
+          @keyframes gradient {
+            0%, 100% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
           }
-        }
-        .animate-blob {
-          animation: blob 10s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-        .animate-scale-up {
-          animation: scaleUp 0.3s ease-out forwards;
-        }
-        @keyframes scaleUp {
-          from {
-            transform: scale(0.95);
-            opacity: 0;
+          
+          .animate-gradient {
+            background-size: 200% 200%;
+            animation: gradient 3s ease infinite;
           }
-          to {
-            transform: scale(1);
-            opacity: 1;
+          
+          .animate-pulse-slow {
+            animation: pulse-slow 4s ease-in-out infinite;
           }
-        }
-        .line-clamp-2 {
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-        
-        /* Enhanced custom scrollbar styles */
-        .scrollbar-thin {
-          scrollbar-width: thin;
-        }
-        
-        /* For Webkit browsers (Chrome, Safari) */
-        .scrollbar-thin::-webkit-scrollbar {
-          height: 6px;
-          width: 6px;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-          background-color: rgba(168, 85, 247, 0.3);
-          border-radius: 9999px;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-          background-color: rgba(168, 85, 247, 0.5);
-        }
-        
-        .scrollbar-rounded::-webkit-scrollbar-thumb {
-          border-radius: 9999px;
-        }
-        
-        * {
-          scrollbar-color: rgba(168, 85, 247, 0.3) transparent;
-          scrollbar-width: thin;
-        }
-        
-        .scroll-smooth {
-          scroll-behavior: smooth;
-        }
-      `}</style>
+          
+          .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+          }
+          
+          .animate-scale-up {
+            animation: scaleUp 0.3s ease-out forwards;
+          }
+          
+          @keyframes scaleUp {
+            from {
+              transform: scale(0.95);
+              opacity: 0;
+            }
+            to {
+              transform: scale(1);
+              opacity: 1;
+            }
+          }
+          
+          .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+          
+          /* Custom scrollbar styles */
+          .scrollbar-thin {
+            scrollbar-width: thin;
+          }
+          
+          .scrollbar-thin::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+          }
+          
+          .scrollbar-thin::-webkit-scrollbar-track {
+            background: transparent;
+          }
+          
+          .scrollbar-thin::-webkit-scrollbar-thumb {
+            background-color: rgba(168, 85, 247, 0.5);
+            border-radius: 9999px;
+          }
+          
+          .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(168, 85, 247, 0.7);
+          }
+        `
+      }} />
     </section>
   );
 };
