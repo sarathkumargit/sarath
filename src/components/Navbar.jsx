@@ -1,113 +1,97 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Menu, X, Code2 } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isContactDropdownOpen, setIsContactDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Close dropdown when clicking outside
+  // Handle scroll effect
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsContactDropdownOpen(false);
-      }
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navLinks = [
+    { href: '#home', label: 'Home' },
+    { href: '#about', label: 'About' },
+    { href: '#projects', label: 'Projects' },
+    { href: '#blog', label: 'Blog' },
+  ];
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-indigo-600/20 border-b border-indigo-500/30">
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center">
-          {/* Mobile Menu Toggle (Hamburger Icon) - Now at the left */}
-          <div className="sm:hidden flex items-center">
-            <button
-              type="button"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-white hover:text-indigo-200 focus:outline-none"
-            >
-              {/* Hamburger Icon */}
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+    <nav 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-black/60 backdrop-blur-2xl border-b border-violet-500/40 shadow-lg shadow-violet-500/20' 
+          : 'bg-black/20 backdrop-blur-xl border-b border-violet-500/20'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <a href="#home" className="flex items-center space-x-2 group">
+            
+             
+              <img src="./src/assets/logo.png" alt="Logo" className="w-6 h-6" />
+          
+            
+          </a>
+
+          {/* Desktop Menu - Centered */}
+          <div className="hidden md:flex items-center space-x-1 absolute left-1/2 transform -translate-x-1/2">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="px-4 py-2 text-gray-300 hover:text-white transition-colors relative group"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
-              </svg>
-            </button>
+                {link.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-violet-500 to-purple-500 group-hover:w-full transition-all duration-300" />
+              </a>
+            ))}
           </div>
 
-          {/* Desktop Menu - Now centered */}
-          <div className="hidden sm:flex sm:space-x-8 items-center justify-center w-full">
-            <a href="#home" className="text-white hover:text-indigo-200 font-medium">
-              Home
-            </a>
-            <a href="#about" className="text-white hover:text-indigo-200 font-medium">
-              About
-            </a>
-            <a href="#projects" className="text-white hover:text-indigo-200 font-medium">
-              Projects
-            </a>
-            <a href="#blog" className="text-white hover:text-indigo-200 font-medium">
-              Blog
-            </a>
-            {/* Contact Me Button */}
+          {/* Contact Button - Right */}
+          <div className="hidden md:flex items-center">
             <a
-              href="#contact" // Redirect to the Contact section
-              className="bg-indigo-900/30 text-white px-4 py-2 rounded-md font-medium hover:bg-indigo-900 transition-colors border border-indigo-300/30"
+              href="#contact"
+              className="px-6 py-2 bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-lg font-semibold shadow-lg shadow-violet-500/50 hover:shadow-violet-500/80 transition-all duration-300 hover:scale-105"
             >
               Contact Me
             </a>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden w-10 h-10 rounded-lg bg-violet-500/10 border border-violet-500/30 flex items-center justify-center text-violet-400 hover:bg-violet-500/20 transition-all duration-300"
+          >
+            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
 
-        {/* Mobile Menu (Dropdown) */}
+        {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="sm:hidden bg-indigo-600/20 backdrop-blur-md border-b border-indigo-500/30">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <a
-                href="#home"
-                className="block text-white hover:text-indigo-200"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Home
-              </a>
-              <a
-                href="#about"
-                className="block text-white hover:text-indigo-200"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                About
-              </a>
-              <a
-                href="#projects"
-                className="block text-white hover:text-indigo-200"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Projects
-              </a>
-              <a
-                href="#blog"
-                className="block text-white hover:text-indigo-200"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Blog
-              </a>
-              {/* Contact Me Button for Mobile */}
+          <div className="md:hidden py-4 border-t border-violet-500/20 animate-slide-down">
+            <div className="space-y-2">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-4 py-2 text-gray-300 hover:text-white hover:bg-violet-500/10 rounded-lg transition-all duration-300"
+                >
+                  {link.label}
+                </a>
+              ))}
               <a
                 href="#contact"
-                className="block w-full text-left text-white hover:text-indigo-200"
                 onClick={() => setIsMenuOpen(false)}
+                className="block px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-lg font-semibold text-center shadow-lg shadow-violet-500/50 hover:shadow-violet-500/80 transition-all duration-300"
               >
                 Contact Me
               </a>
@@ -115,6 +99,26 @@ const Navbar = () => {
           </div>
         )}
       </div>
+
+      {/* CSS Animations */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes slide-down {
+            from {
+              opacity: 0;
+              transform: translateY(-10px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .animate-slide-down {
+            animation: slide-down 0.3s ease-out forwards;
+          }
+        `
+      }} />
     </nav>
   );
 };
