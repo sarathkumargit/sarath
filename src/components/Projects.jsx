@@ -9,26 +9,15 @@ import cabanaImage from '../assets/cabana.jpeg';
 import ecomImage from '../assets/ecom.jpeg';
 
 const Projects = () => {
-  // Animation state for circles
-  const [activeIndex, setActiveIndex] = useState(null);
-
-  // Animation effect for blinking
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => {
-        if (prev === null) return 0;
-        return (prev + 1) % 6;
-      });
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   // Enhanced projects data with 6 projects and LinkedIn links
   const projects = [
     {
       id: 1,
       name: 'Wellassa Uni Hub',
+      description: 'A comprehensive university hub platform built with modern web technologies',
       technologies: ['Bootstrap', 'php', 'mysql'],
       githubLink: 'https://github.com/yourusername/ecommerce',
       linkedinPost: 'https://www.linkedin.com/posts/geeth-hashan-66b12b250_wellassaunihub-innovation-webdevelopment-ugcPost-7283867057782145024-_pyK?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE1khF4B1r3oCV7Oy05moQcW1_9s-N_-7_k',
@@ -37,6 +26,7 @@ const Projects = () => {
     {
       id: 2,
       name: 'Portfolio Website',
+      description: 'A modern, responsive portfolio showcasing creative work and projects',
       technologies: ['react js', 'Tailwind CSS', 'vite'],
       githubLink: 'https://github.com/yourusername/portfolio',
       liveLink: 'https://portfolio-project.com',
@@ -46,6 +36,7 @@ const Projects = () => {
     {
       id: 3,
       name: 'Hospital Appointment Booking System',
+      description: 'Streamlined healthcare appointment management system',
       technologies: ['Bootstrap, HTML, CSS', 'MySql', 'JSP, Servlets'],
       githubLink: 'https://github.com/yourusername/taskmanager',
       linkedinPost: 'https://www.linkedin.com/posts/sarath-kumar-07aa14302_webdevelopment-rapidapplicationdevelopment-activity-7283871597445218304-nPQZ?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE1khF4B1r3oCV7Oy05moQcW1_9s-N_-7_k',
@@ -54,6 +45,7 @@ const Projects = () => {
     {
       id: 4,
       name: 'Game Store',
+      description: 'Full-featured e-commerce platform for gaming enthusiasts',
       technologies: ['HTML,CSS', 'Php', 'MySql','JavaScript'],
       githubLink: 'https://github.com/yourusername/aichat',
       liveLink: 'https://aichat-project.com',
@@ -63,6 +55,7 @@ const Projects = () => {
     {
       id: 5,
       name: 'SketchUp Cabana design',
+      description: 'Stunning 3D architectural visualization and design',
       technologies: ['3D SketchUp', 'Vray', 'Photoshop'],
       githubLink: 'https://github.com/yourusername/fitnesstracker',
       linkedinPost: 'https://www.linkedin.com/posts/sarath-kumar-07aa14302_3ddesign-ai-architecture-activity-7254358667309862912-VWmi?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE1khF4B1r3oCV7Oy05moQcW1_9s-N_-7_k',
@@ -71,6 +64,7 @@ const Projects = () => {
     {
       id: 6,
       name: 'E-commerce frontend',
+      description: 'Modern and intuitive e-commerce user interface',
       technologies: ['HTML', 'CSS', 'JavaScript'],
       githubLink: 'https://github.com/yourusername/wallet',
       linkedinPost: 'https://www.linkedin.com/posts/sarath-kumar-07aa14302_ecommercedevelopment-htmlcssjavascript-innovation-activity-7185473606498291712-6b1s?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE1khF4B1r3oCV7Oy05moQcW1_9s-N_-7_k',
@@ -78,111 +72,109 @@ const Projects = () => {
     },
   ];
 
+  // Auto-rotate cards
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+
+  const handleNext = () => {
+    if (!isAnimating) {
+      setIsAnimating(true);
+      setCurrentIndex((prev) => (prev + 1) % projects.length);
+      setTimeout(() => setIsAnimating(false), 1000);
+    }
+  };
+
+  const handlePrev = () => {
+    if (!isAnimating) {
+      setIsAnimating(true);
+      setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
+      setTimeout(() => setIsAnimating(false), 1000);
+    }
+  };
+
+  const getCardPosition = (index) => {
+    const diff = index - currentIndex;
+    const totalCards = projects.length;
+    
+    // Normalize the difference to be between -totalCards/2 and totalCards/2
+    let normalizedDiff = diff;
+    if (diff > totalCards / 2) {
+      normalizedDiff = diff - totalCards;
+    } else if (diff < -totalCards / 2) {
+      normalizedDiff = diff + totalCards;
+    }
+
+    return normalizedDiff;
+  };
+
   return (
     <section
       id="projects"
-      className="py-20 relative overflow-hidden"
+      className="py-20 relative overflow-hidden min-h-screen flex items-center"
     >
-      {/* Programming & 3D Design Background */}
-      <div className="absolute inset-0 bg-gray-900 z-0">
-        {/* Grid lines */}
+      {/* Dark Background */}
+      <div className="absolute inset-0 bg-black z-0">
+        {/* Static grid */}
         <div className="absolute inset-0 opacity-10">
           <div className="h-full w-full" style={{ 
-            backgroundImage: 'linear-gradient(to right, #8b5cf6 1px, transparent 1px), linear-gradient(to bottom, #8b5cf6 1px, transparent 1px)',
-            backgroundSize: '20px 20px'
+            backgroundImage: 'linear-gradient(to right, #7c3aed 1px, transparent 1px), linear-gradient(to bottom, #7c3aed 1px, transparent 1px)',
+            backgroundSize: '40px 40px'
           }}></div>
         </div>
 
-        {/* Code elements in the background */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-5">
-          <div className="absolute -left-20 top-10 text-purple-500 text-opacity-50 text-4xl font-mono transform -rotate-12">
-            &lt;div className="projects"&gt;
-          </div>
-          <div className="absolute right-10 top-1/4 text-green-400 text-opacity-50 text-3xl font-mono transform rotate-6">
-            const [state, setState] = useState();
-          </div>
-          <div className="absolute left-1/4 bottom-1/3 text-blue-400 text-opacity-50 text-3xl font-mono transform -rotate-3">
-            function render() &#123; return; &#125;
-          </div>
-          <div className="absolute right-1/3 bottom-20 text-teal-400 text-opacity-50 text-2xl font-mono transform rotate-2">
-            .container &#123; display: flex; &#125;
-          </div>
-          <div className="absolute left-1/2 top-1/3 text-orange-400 text-opacity-50 text-2xl font-mono transform -rotate-5">
-            import React from 'react';
-          </div>
-        </div>
+        {/* Blinking Violet Outline Lines */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Top border */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-violet-500 to-transparent animate-blink-line"></div>
+          
+          {/* Bottom border */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-violet-500 to-transparent animate-blink-line" style={{ animationDelay: '1s' }}></div>
+          
+          {/* Left border */}
+          <div className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-transparent via-violet-500 to-transparent animate-blink-line" style={{ animationDelay: '0.5s' }}></div>
+          
+          {/* Right border */}
+          <div className="absolute top-0 bottom-0 right-0 w-1 bg-gradient-to-b from-transparent via-violet-500 to-transparent animate-blink-line" style={{ animationDelay: '1.5s' }}></div>
 
-        {/* 3D elements in the background */}
-        <div className="absolute inset-0 overflow-hidden opacity-10">
-          <div className="absolute top-20 right-20">
-            <svg width="150" height="150" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-              <path d="M100 0 L200 50 L100 100 L0 50 Z" fill="#9333ea" />
-              <path d="M100 100 L200 50 L200 150 L100 200 Z" fill="#7e22ce" />
-              <path d="M100 100 L0 50 L0 150 L100 200 Z" fill="#6b21a8" />
-            </svg>
-          </div>
-          <div className="absolute bottom-10 left-10">
-            <svg width="120" height="120" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20,20 L180,20 L180,180 L20,180 Z" fill="none" stroke="#f97316" strokeWidth="4" />
-              <path d="M50,50 L150,50 L150,150 L50,150 Z" fill="none" stroke="#f97316" strokeWidth="4" />
-              <line x1="20" y1="20" x2="50" y2="50" stroke="#f97316" strokeWidth="4" />
-              <line x1="180" y1="20" x2="150" y2="50" stroke="#f97316" strokeWidth="4" />
-              <line x1="180" y1="180" x2="150" y2="150" stroke="#f97316" strokeWidth="4" />
-              <line x1="20" y1="180" x2="50" y2="150" stroke="#f97316" strokeWidth="4" />
-            </svg>
-          </div>
-          <div className="absolute top-1/2 left-1/3">
-            <svg width="100" height="100" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="100" cy="100" r="80" fill="none" stroke="#06b6d4" strokeWidth="4" />
-              <ellipse cx="100" cy="100" rx="80" ry="40" fill="none" stroke="#06b6d4" strokeWidth="4" transform="rotate(30)" />
-              <ellipse cx="100" cy="100" rx="80" ry="40" fill="none" stroke="#06b6d4" strokeWidth="4" transform="rotate(90)" />
-            </svg>
-          </div>
-        </div>
-
-        {/* Animated particles */}
-        <div className="absolute inset-0">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-purple-600 opacity-30"
-              style={{
-                width: Math.random() * 10 + 5 + 'px',
-                height: Math.random() * 10 + 5 + 'px',
-                left: Math.random() * 100 + '%',
-                top: Math.random() * 100 + '%',
-                animation: `float ${Math.random() * 10 + 20}s linear infinite`,
-                animationDelay: `${Math.random() * 10}s`,
-              }}
-            ></div>
-          ))}
+          {/* Diagonal lines */}
+          <div className="absolute top-1/4 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-violet-400/50 to-transparent animate-blink-line-slow"></div>
+          <div className="absolute top-3/4 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-violet-400/50 to-transparent animate-blink-line-slow" style={{ animationDelay: '1s' }}></div>
+          
+          {/* Vertical accent lines */}
+          <div className="absolute top-0 bottom-0 left-1/4 w-0.5 bg-gradient-to-b from-transparent via-violet-400/50 to-transparent animate-blink-line-slow" style={{ animationDelay: '0.5s' }}></div>
+          <div className="absolute top-0 bottom-0 left-3/4 w-0.5 bg-gradient-to-b from-transparent via-violet-400/50 to-transparent animate-blink-line-slow" style={{ animationDelay: '1.5s' }}></div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Topic at the top */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 pb-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-6xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-violet-500 to-purple-500 pb-2 mb-4">
             My Projects
           </h1>
-          <p className="mt-4 text-xl text-gray-200 max-w-3xl mx-auto">
-            Explore my latest work and creative solutions. Click on any project to view more details.
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+            
           </p>
         </div>
 
-        {/* LinkedIn and GitHub Icons */}
-        <div className="flex justify-center space-x-6 mb-12">
+        {/* Social Links */}
+        <div className="flex justify-center space-x-6 mb-16">
           <a
             href="https://www.linkedin.com/in/sarath-kumar-07aa14302"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-200 hover:text-purple-400 transition-colors duration-300"
+            className="text-gray-200 hover:text-violet-400 transition-all duration-300 transform hover:scale-110"
             aria-label="LinkedIn Profile"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
+              className="h-10 w-10"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -193,12 +185,12 @@ const Projects = () => {
             href="https://github.com/sarathkumargit"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-200 hover:text-purple-400 transition-colors duration-300"
+            className="text-gray-200 hover:text-violet-400 transition-all duration-300 transform hover:scale-110"
             aria-label="GitHub Profile"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
+              className="h-10 w-10"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -207,99 +199,175 @@ const Projects = () => {
           </a>
         </div>
 
-        {/* Mobile view instruction */}
-        <div className="block md:hidden text-center mb-4">
-          <p className="text-gray-200 italic">Swipe horizontally to see more projects</p>
-        </div>
-
-        {/* Scrollable container for mobile devices */}
-        <div className="overflow-x-auto pb-4 md:pb-0 hide-scrollbar">
-          {/* Project Circles - Horizontal scrollable on mobile, grid on larger screens */}
-          <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 justify-items-center min-w-max md:min-w-0">
-            {projects.map((project, index) => (
-              <div key={project.id} className="relative w-64 md:w-full max-w-xs aspect-square mx-2 md:mx-0">
-                <a
-                  href={project.linkedinPost}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full h-full"
+        {/* 3D Card Carousel */}
+        <div className="relative h-[600px] md:h-[700px]" style={{ perspective: '2000px' }}>
+          <div className="absolute inset-0 flex items-center justify-center">
+            {projects.map((project, index) => {
+              const position = getCardPosition(index);
+              const isActive = position === 0;
+              const absPosition = Math.abs(position);
+              
+              return (
+                <div
+                  key={project.id}
+                  className="absolute transition-all duration-1000 ease-out"
+                  style={{
+                    transform: `
+                      translateX(${position * 350}px)
+                      translateZ(${-absPosition * 300}px)
+                      rotateY(${position * -25}deg)
+                      scale(${isActive ? 1.05 : 0.7 - absPosition * 0.1})
+                    `,
+                    opacity: absPosition > 2 ? 0 : 1 - absPosition * 0.3,
+                    zIndex: 10 - absPosition,
+                    pointerEvents: isActive ? 'auto' : 'none',
+                  }}
                 >
-                  <div
-                    className={`
-                      absolute inset-0 rounded-full overflow-hidden
-                      transform transition-all duration-700 ease-in-out
-                      ${activeIndex === index ? 'scale-110 shadow-lg shadow-purple-500/50' : 'scale-100'}
-                    `}
+                  <a
+                    href={project.linkedinPost}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
                   >
-                    {/* Project Image */}
-                    <img
-                      src={project.image}
-                      alt={project.name}
-                      className="w-full h-full object-cover"
-                    />
-
-                    {/* Content */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-black/50 rounded-full">
-                      <h3 className="text-xl md:text-2xl font-bold text-white mb-2">{project.name}</h3>
-
-                      <div className="flex flex-wrap justify-center gap-1 mb-4">
-                        {project.technologies.map((tech, techIndex) => (
-                          <span
-                            key={techIndex}
-                            className="text-xs font-medium text-white bg-black/30 px-2 py-1 rounded-full"
-                          >
-                            {tech}
-                          </span>
-                        ))}
+                    <div className={`w-[350px] md:w-[450px] h-[500px] md:h-[600px] bg-gradient-to-br from-violet-900/90 to-violet-700/90 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-lg border-2 transition-all duration-700 ${
+                      isActive ? 'border-violet-400 animate-blink-border' : 'border-violet-500/30'
+                    } hover:border-violet-400/60`}>
+                      {/* Card Image */}
+                      <div className="h-1/2 overflow-hidden relative">
+                        <img
+                          src={project.image}
+                          alt={project.name}
+                          className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-700"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-violet-900/80 to-transparent"></div>
                       </div>
 
-                      {/* Click Here Button */}
-                      <button
-                        className={`
-                          mt-2 px-4 py-2 bg-white text-purple-700 rounded-full font-semibold
-                          transform transition-all duration-500 hover:scale-105
-                          shadow-md hover:shadow-xl
-                          ${activeIndex === index ? 'animate-pulse' : ''}
-                        `}
-                      >
-                        Click Here
-                      </button>
+                      {/* Card Content */}
+                      <div className="p-8 h-1/2 flex flex-col justify-between">
+                        <div>
+                          <h3 className="text-3xl md:text-4xl font-bold text-white mb-3 leading-tight">
+                            {project.name}
+                          </h3>
+                          <p className="text-gray-300 text-sm md:text-base mb-4 line-clamp-2">
+                            {project.description}
+                          </p>
+                          
+                          {/* Technologies */}
+                          <div className="flex flex-wrap gap-2 mb-6">
+                            {project.technologies.map((tech, techIndex) => (
+                              <span
+                                key={techIndex}
+                                className="px-3 py-1 text-xs font-semibold text-violet-200 bg-violet-800/50 rounded-full border border-violet-500/30"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* View Project Button */}
+                        <button className="w-full py-4 bg-gradient-to-r from-violet-600 to-violet-500 hover:from-violet-500 hover:to-violet-400 text-white font-bold rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-violet-500/50 text-lg">
+                          View Project
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </a>
-              </div>
-            ))}
+                  </a>
+                </div>
+              );
+            })}
           </div>
+
+          {/* Navigation Buttons */}
+          <button
+            onClick={handlePrev}
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 md:w-16 md:h-16 bg-violet-600/80 hover:bg-violet-500 rounded-full flex items-center justify-center text-white shadow-xl hover:shadow-violet-500/50 transition-all duration-300 transform hover:scale-110 backdrop-blur-sm"
+            aria-label="Previous project"
+          >
+            <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            onClick={handleNext}
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 md:w-16 md:h-16 bg-violet-600/80 hover:bg-violet-500 rounded-full flex items-center justify-center text-white shadow-xl hover:shadow-violet-500/50 transition-all duration-300 transform hover:scale-110 backdrop-blur-sm"
+            aria-label="Next project"
+          >
+            <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
 
-        {/* Add CSS for hiding scrollbar but keeping functionality */}
-        <style jsx>{`
-          .hide-scrollbar {
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE/Edge */
-          }
-          .hide-scrollbar::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
-          }
-          @keyframes float {
-            0% {
-              transform: translateY(0) translateX(0);
-            }
-            25% {
-              transform: translateY(-20px) translateX(10px);
-            }
-            50% {
-              transform: translateY(0) translateX(20px);
-            }
-            75% {
-              transform: translateY(20px) translateX(10px);
-            }
-            100% {
-              transform: translateY(0) translateX(0);
-            }
-          }
-        `}</style>
+        {/* Indicators */}
+        <div className="flex justify-center mt-12 gap-3">
+          {projects.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                if (!isAnimating) {
+                  setIsAnimating(true);
+                  setCurrentIndex(index);
+                  setTimeout(() => setIsAnimating(false), 1000);
+                }
+              }}
+              className={`h-3 rounded-full transition-all duration-300 ${
+                index === currentIndex 
+                  ? 'w-12 bg-gradient-to-r from-violet-500 to-violet-400' 
+                  : 'w-3 bg-gray-500 hover:bg-gray-400'
+              }`}
+              aria-label={`Go to project ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
+
+      {/* Animations */}
+      <style jsx>{`
+        @keyframes blink-border {
+          0%, 100% {
+            border-color: rgb(167 139 250);
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.6), 0 0 40px rgba(167, 139, 250, 0.4);
+          }
+          50% {
+            border-color: rgb(196 181 253);
+            box-shadow: 0 0 30px rgba(196, 181, 253, 0.8), 0 0 60px rgba(196, 181, 253, 0.5);
+          }
+        }
+        
+        .animate-blink-border {
+          animation: blink-border 2s ease-in-out infinite;
+        }
+
+        @keyframes blink-line {
+          0%, 100% {
+            opacity: 0.3;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+          }
+          50% {
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.8), 0 0 40px rgba(139, 92, 246, 0.4);
+          }
+        }
+
+        @keyframes blink-line-slow {
+          0%, 100% {
+            opacity: 0.2;
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
+          }
+          50% {
+            opacity: 0.6;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.6), 0 0 30px rgba(139, 92, 246, 0.3);
+          }
+        }
+
+        .animate-blink-line {
+          animation: blink-line 2s ease-in-out infinite;
+        }
+
+        .animate-blink-line-slow {
+          animation: blink-line-slow 3s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   );
 };
