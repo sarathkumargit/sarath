@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Code2 } from 'lucide-react';
-
+import logo from '../assets/logo.png';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -36,7 +36,7 @@ const Navbar = () => {
           <a href="#home" className="flex items-center space-x-2 group">
             
              
-              <img src="./src/assets/logo.png" alt="Logo" className="w-6 h-6" />
+              <img src={logo} alt="Logo" className="w-6 h-6" />
           
             
           </a>
