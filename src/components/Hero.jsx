@@ -187,34 +187,59 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="home" className="relative bg-indigo-900 overflow-hidden min-h-screen">
-      {/* Background - Black for mobile, with 3D model for desktop */}
-      <div className="absolute inset-0 bg-black z-0"></div>
+    <section id="home" className="relative bg-black overflow-hidden min-h-screen">
+      {/* Parallax Background Layers */}
+      <div className="absolute inset-0">
+        {/* Layer 1: Base black background */}
+        <div className="absolute inset-0 bg-black z-0"></div>
 
-      {/* Spline 3D model - Only shown on desktop (md and above) */}
-      {!isMobile && (
-        <div className="absolute inset-0 z-0 opacity-70 hidden md:block">
-          <spline-viewer
-            url="https://prod.spline.design/RJHvLFVM0NzQbwMV/scene.splinecode"
-            events-target="global"
-          ></spline-viewer>
-        </div>
-      )}
+        {/* Layer 2: Animated gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-violet-950/30 to-purple-950/30"></div>
+        
+        {/* Layer 3: Animated mesh gradient */}
+        <div 
+          className="absolute inset-0 opacity-40"
+          style={{
+            background: 'radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.4) 0%, transparent 50%)',
+          }}
+        />
 
-      {/* Mobile background gradient - Only shown on mobile */}
-      <div className="absolute inset-0 z-0 md:hidden bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900">
-        {/* Animated background elements for mobile */}
-        <div className="absolute inset-0 overflow-hidden">
-          {/* Floating shapes */}
-          <div className="absolute top-10 left-10 w-20 h-20 bg-indigo-600/30 rounded-full animate-pulse"></div>
-          <div className="absolute top-1/3 right-8 w-16 h-16 bg-purple-600/30 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute bottom-1/4 left-6 w-12 h-12 bg-blue-600/30 rounded-full animate-ping" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute bottom-10 right-1/4 w-14 h-14 bg-pink-600/30 rounded-full animate-pulse" style={{ animationDelay: '3s' }}></div>
-          
-          {/* Gradient overlays */}
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-indigo-800/20 to-transparent"></div>
-          <div className="absolute bottom-0 right-0 w-full h-full bg-gradient-to-l from-purple-800/20 to-transparent"></div>
+        {/* Layer 4: Floating particles */}
+        <div className="absolute inset-0">
+          {Array.from({ length: 30 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full bg-violet-500/20 blur-sm"
+              style={{
+                width: `${Math.random() * 6 + 2}px`,
+                height: `${Math.random() * 6 + 2}px`,
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                animation: `float ${Math.random() * 10 + 15}s ease-in-out infinite`,
+                animationDelay: `${Math.random() * 5}s`,
+              }}
+            />
+          ))}
         </div>
+
+        {/* Layer 5: Grid pattern */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(139, 92, 246, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.3) 1px, transparent 1px)',
+            backgroundSize: '50px 50px',
+          }}
+        />
+
+        {/* Spline 3D model - Only shown on desktop (md and above) */}
+        {!isMobile && (
+          <div className="absolute inset-0 z-0 opacity-40 hidden md:block">
+            <spline-viewer
+              url="https://prod.spline.design/RJHvLFVM0NzQbwMV/scene.splinecode"
+              events-target="global"
+            ></spline-viewer>
+          </div>
+        )}
       </div>
 
       <div className="max-w-8xl mx-auto relative z-10 px-4 sm:px-6 md:px-8">
@@ -223,7 +248,7 @@ const Hero = () => {
           {/* For mobile: First show image, then text. For desktop: Keep original order */}
           <div className="hidden lg:block lg:w-1/2 mb-12 lg:mb-0">
             {/* This is the text content for desktop only (shows on left) */}
-            <div className={`  p-4 sm:p-6 rounded-lg text-white transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`p-4 sm:p-6 rounded-lg text-white transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight font-extrabold text-center lg:text-left">
                 <span className="block">
                   <AuroraText 
@@ -231,9 +256,9 @@ const Hero = () => {
                     fontSize="clamp(2rem, 5vw, 3.5rem)"
                   />
                 </span>
-                <span className=" block text-indigo-300 mt-1 text-[40px]">Innovator in Code and Creativity</span>
+                <span className="block text-indigo-300 mt-1 text-[40px]">Innovator in Code and Creativity</span>
               </h1>
-              <p className=" bg-indigo-900/30 mt-3 text-sm sm:text-base md:text-lg text-indigo-100 text-center lg:text-left">
+              <p className="bg-indigo-900/30 mt-3 text-sm sm:text-base md:text-lg text-indigo-100 text-center lg:text-left">
                 Passionate developer skilled in web and mobile app development and 3D SketchUp design. I excel at creating user-friendly products with intuitive interfaces and robust systems while leveraging my collaboration skills to achieve impactful results. Let's connect and build something extraordinary!
               </p>
               <div className="mt-5 sm:mt-8 flex flex-col sm:flex-row justify-center lg:justify-start gap-3 sm:gap-4">
@@ -407,6 +432,51 @@ const Hero = () => {
           @keyframes aurora-glow {
             0% { transform: translateX(-10px) translateY(-5px); }
             100% { transform: translateX(10px) translateY(5px); }
+          }
+
+          @keyframes robo-outline {
+            0%, 100% {
+              border-color: rgba(139, 92, 246, 0.6);
+              box-shadow: 0 0 30px rgba(139, 92, 246, 0.6), inset 0 0 30px rgba(139, 92, 246, 0.3);
+            }
+            50% {
+              border-color: rgba(196, 181, 253, 0.9);
+              box-shadow: 0 0 50px rgba(196, 181, 253, 0.9), inset 0 0 50px rgba(196, 181, 253, 0.5);
+            }
+          }
+
+          @keyframes robo-outline-inner {
+            0%, 100% {
+              border-color: rgba(167, 139, 250, 0.4);
+              box-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
+            }
+            50% {
+              border-color: rgba(196, 181, 253, 0.7);
+              box-shadow: 0 0 35px rgba(196, 181, 253, 0.7);
+            }
+          }
+
+          @keyframes robo-corner {
+            0%, 100% {
+              opacity: 0.5;
+              box-shadow: 0 0 10px rgba(196, 181, 253, 0.5);
+            }
+            50% {
+              opacity: 1;
+              box-shadow: 0 0 25px rgba(196, 181, 253, 0.9);
+            }
+          }
+
+          .animate-robo-outline {
+            animation: robo-outline 3s ease-in-out infinite;
+          }
+
+          .animate-robo-outline-inner {
+            animation: robo-outline-inner 2.5s ease-in-out infinite;
+          }
+
+          .animate-robo-corner {
+            animation: robo-corner 2s ease-in-out infinite;
           }
           
           @media (max-width: 640px) {
