@@ -36,7 +36,7 @@ const Navbar = () => {
           <a href="#home" className="flex items-center space-x-2 group">
             
              
-              <img src={logo} alt="Logo" className="w-8 h-8" />
+              <img src={logo} alt="Logo" className="w-12 h-12 rounded-full" />
           
             
           </a>
