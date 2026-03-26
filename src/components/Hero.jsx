@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // Profile Image
-import profileImage from '../assets/sk2.jpg';
+import profileImage from '../assets/sk2.JPG';
 //
 // Technology Icons
 import dotnetIcon from '../assets/icons/dotnet-core.png';
